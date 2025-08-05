@@ -47,7 +47,8 @@ Git: Git 공식 웹사이트에서 다운로드 및 설치.
 ``` python -m venv .venv
 ```
 # Windows
-```.venv\Scripts\activate
+```
+.venv\Scripts\activate
 ```
 # macOS/Linux
 ```source .venv/bin/activate
