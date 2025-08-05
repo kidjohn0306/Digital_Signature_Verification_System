@@ -47,20 +47,22 @@ Git: Git 공식 웹사이트에서 다운로드 및 설치.
 ``` python -m venv .venv
 ```
 # Windows
-```
-.venv\Scripts\activate
+```.venv\Scripts\activate
 ```
 # macOS/Linux
-```source .venv/bin/activate
+```
+source .venv/bin/activate
 ```
 
 ### Python 패키지 설치
-```pip install fastapi uvicorn cryptography passlib[bcrypt] python-dotenv supabase-py
+```
+pip install fastapi uvicorn cryptography passlib[bcrypt] python-dotenv supabase-py
 ```
 ## ⚙️ 환경 설정
 .env 파일 생성 및 설정:
 프로젝트 루트 디렉토리에 .env 파일을 생성하고, SUPABASE_URL, SUPABASE_KEY 값을 설정합니다. 특히, ISSUING_AUTHORITY_PRIVATE_KEY에는 유효한 PEM 형식의 RSA 개인 키를 입력해야 합니다.
-```openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048 명령어를 사용하여 개인 키를 생성할 수 있습니다.
+```
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048 명령어를 사용하여 개인 키를 생성할 수 있습니다.
 ```
 ### Supabase 데이터베이스 설정:
 Supabase의 documents 테이블에 signature라는 새로운 TEXT 타입 컬럼을 추가해야 합니다.
@@ -71,7 +73,8 @@ Supabase의 documents 테이블에 signature라는 새로운 TEXT 타입 컬럼�
 ### 백엔드 서버 실행:
 이전에 활성화한 Python 가상 환경에서 다음 명령어를 실행합니다:
 
-```uvicorn main:app --reload --port 8000
+```
+uvicorn main:app --reload --port 8000
 ```
 
 ### 서버가 http://127.0.0.1:8000에서 실행될 것입니다.
