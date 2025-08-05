@@ -44,10 +44,12 @@ Git: Git 공식 웹사이트에서 다운로드 및 설치.
 프로젝트 루트 디렉토리에서 터미널을 열고 다음 명령어를 실행하여 필요한 종속성(패키지)을 설치합니다:
 
 ### Python 가상 환경 생성 및 활성화 (권장)
-``` python -m venv .venv
+```
+python -m venv .venv
 ```
 # Windows
-```.venv\Scripts\activate
+```
+.venv\Scripts\activate
 ```
 # macOS/Linux
 ```
