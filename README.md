@@ -1,4 +1,5 @@
-# 문서 진위 확인 시스템 (Digital Signature Verification System)
+# 문서 진위 확인 시스템  
+## (Digital Signature Verification System)
 ### FastAPI 백엔드와 Supabase를 활용하여 디지털 서명(Digital Signatures) 및 공개 키 기반 구조(PKI)로 문서의 진위를 확인하는 시스템입니다.
 
 ### 문서의 해시값을 RSA 개인 키로 서명하고, 이 서명값을 통해 문서의 위변조 여부를 검증합니다. Supabase는 문서 메타데이터와 서명값을 안전하게 저장하는 역할을 합니다.
