@@ -1,102 +1,194 @@
-# 문서 진위 확인 시스템  
-## (Digital Signature Verification System)
-### FastAPI 백엔드와 Supabase를 활용하여 디지털 서명(Digital Signatures) 및 공개 키 기반 구조(PKI)로 문서의 진위를 확인하는 시스템입니다.
+# 문서 진위 확인 및 버전 관리 시스템
+## FastAPI 백엔드와 Supabase를 활용하여 디지털 서명으로 문서의 진위를 확인하고, 버전을 관리하는 시스템입니다.
 
-### 문서의 해시값을 RSA 개인 키로 서명하고, 이 서명값을 통해 문서의 위변조 여부를 검증합니다. Supabase는 문서 메타데이터와 서명값을 안전하게 저장하는 역할을 합니다.
-
-## 🗂️ 프로젝트 구조
-Digital_Signature_Verification_System/
-
-├── .env                      # 환경 변수 파일 (민감한 정보 포함, gitignore에 추가)
-
-├── .env.example              # 환경 변수 예시 파일
-
-├── .gitignore                # Git 추적에서 제외할 파일 설정
-
-├── index.html                # 웹 프론트엔드 (HTML/JavaScript)
-
-├── main.py                   # FastAPI 백엔드 서버 코드 (Python)
-
-├── requirements.txt          # Python 패키지 의존성 목록
-
-└── README.md                 # 현재 문서
+사용자는 문서를 신규 등록하거나 기존 문서를 업데이트할 수 있습니다. 각 파일의 해시값은 RSA 개인 키로 서명되며, 이 서명값과 버전 정보를 통해 문서의 무결성 및 이력을 관리합니다. Supabase는 사용자 인증, 문서 메타데이터, 파일 저장소 역할을 합니다.
 
 ## ✨ 주요 기능
-문서 서명 및 등록: 파일의 해시값을 계산하여 미리 설정된 RSA 개인 키로 서명합니다. 서명된 해시값과 문서 메타데이터는 Supabase에 안전하게 기록됩니다.
+보안 인증: JWT(JSON Web Token) 기반의 안전한 사용자 회원가입 및 로그인 기능을 제공합니다.
 
-문서 진위 검증: 파일의 해시값을 다시 계산하고, Supabase에 저장된 서명과 개인 키로부터 유도된 공개 키를 비교하여 문서의 위변조 여부를 확인합니다.
+문서 등록 및 디지털 서명: 파일의 SHA-256 해시값을 계산하고, RSA 개인 키로 서명하여 Supabase에 안전하게 기록합니다.
 
-문서 조회: Supabase에 저장된 문서 목록과 상세 정보를 조회할 수 있습니다.
+문서 버전 관리: 기존 문서를 업데이트하여 새로운 버전을 생성할 수 있습니다 (v1, v2, ...). 신규 등록 시에는 동일한 내용의 문서 중복 등록을 방지합니다.
+
+문서 진위 검증: 등록된 원본 문서와 검증할 파일을 1:1로 비교하여 내용의 일치 여부를 판별합니다.
+
+문서 조회 및 관리: 사용자는 자신이 등록한 문서 목록을 버전 정보와 함께 조회하고, 비밀번호를 통해 상세 정보 확인 및 삭제가 가능합니다.
 
 ## 🛠️ 기술 스택
-### 암호화: RSA (Digital Signatures), SHA-256 (Hashing), cryptography 라이브러리
+백엔드: Python, FastAPI
 
-### 백엔드: Python, FastAPI, passlib, python-dotenv
+데이터베이스 & 스토리지: Supabase
 
-### 데이터베이스: Supabase
+프론트엔드: HTML, Vanilla JavaScript, Tailwind CSS
 
-### 프론트엔드: HTML, JavaScript, Tailwind CSS
+암호화 / 인증:
 
-🚀 시작하기
-프로젝트를 실행하기 위한 단계별 지침입니다.
+RSA (Digital Signatures) - cryptography
 
-## 📋 사전 준비 사항
-다음 소프트웨어들이 시스템에 설치되어 있어야 합니다:
+SHA-256 (Hashing)
 
-Python 3.x & pip: Python 공식 웹사이트에서 다운로드 및 설치.
+JWT (User Authentication) - python-jose
 
-Git: Git 공식 웹사이트에서 다운로드 및 설치.
+Bcrypt (Password Hashing) - passlib
 
-## 📦 종속성 설치
-프로젝트 루트 디렉토리에서 터미널을 열고 다음 명령어를 실행하여 필요한 종속성(패키지)을 설치합니다:
+## 🚀 시작하기
+프로젝트를 로컬 환경에서 실행하기 위한 단계별 지침입니다.
 
-## Python 가상 환경 생성 및 활성화 (권장)
+## 1. 사전 준비 사항
+### Python 3.8 이상 및 pip
+
+### Git (필수 X)
+
+## 2. 프로젝트 클론
+```
+git clone https://github.com/your-username/your-repository-name.git
+cd your-repository-name
+```
+## 3. Supabase 프로젝트 설정
+Supabase에 가입하고 새 프로젝트를 생성한 후, 아래 절차를 따라 데이터베이스와 스토리지를 설정합니다.
+
+## 가. 데이터베이스 테이블 및 함수 생성
+Supabase 대시보드의 SQL Editor로 이동하여 아래 SQL 쿼리를 순서대로 실행하세요.
+
+## 1) users 테이블 생성:
+
+SQL
+```
+-- 사용자 정보 저장을 위한 테이블
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    hashed_password TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+## 2) documents 테이블 생성:
+
+SQL
+```
+-- 문서 메타데이터 저장을 위한 테이블
+CREATE TABLE documents (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    document_id UUID,
+    version INT,
+    file_name TEXT,
+    file_hash TEXT,
+    password_hash TEXT,
+    signature TEXT,
+    storage_path TEXT,
+    public_url TEXT,
+    file_content TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+-- 빠른 조회를 위한 인덱스 추가
+CREATE INDEX idx_documents_user_id ON documents(user_id);
+CREATE INDEX idx_documents_file_hash ON documents(file_hash);
+CREATE INDEX idx_documents_document_id ON documents(document_id);
+```
+## 3) 문서 업데이트를 위한 DB 함수 생성:
+(문서 업데이트 시 원본 목록을 효율적으로 가져오는 데 사용됩니다.)
+
+SQL
+```
+-- 각 문서의 최신 버전을 가져오는 함수
+CREATE OR REPLACE FUNCTION get_latest_documents_for_user(p_user_id uuid)
+RETURNS TABLE(document_id uuid, file_name text, version int) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        d.document_id,
+        d.file_name,
+        d.version
+    FROM (
+        SELECT
+            doc.document_id,
+            MAX(doc.version) as max_version
+        FROM documents doc
+        WHERE doc.user_id = p_user_id AND doc.document_id IS NOT NULL
+        GROUP BY doc.document_id
+    ) as latest_versions
+    JOIN documents d ON d.document_id = latest_versions.document_id AND d.version = latest_versions.max_version
+    WHERE d.user_id = p_user_id;
+END;
+$$ LANGUAGE plpgsql;
+```
+## 나. 스토리지 버킷 및 정책 설정
+Supabase 대시보드의 Storage로 이동하여 New bucket을 클릭합니다.
+
+버킷 이름으로 documents를 입력하고, **Public bucket 옵션을 해제(비공개)**한 상태로 생성합니다.
+
+생성된 documents 버킷 옆의 점 3개 메뉴를 클릭하여 Policies로 이동합니다.
+
+기존 정책들을 삭제하고, 아래의 정책들을 New policy를 통해 추가합니다. (SQL 템플릿 사용)
+
+### 1) 로그인한 사용자가 자신의 파일만 볼 수 있도록 허용하는 정책:
+
+SQL
+```
+-- Allows authenticated users to view their own files
+CREATE POLICY "Allow authenticated user to view their own files"
+ON storage.objects FOR SELECT
+TO authenticated
+USING (bucket_id = 'documents' AND auth.uid() = (storage.foldername(name))[1]::uuid);
+```
+### 2) 로그인한 사용자가 자신의 폴더에만 파일을 업로드할 수 있도록 허용하는 정책:
+
+SQL
+```
+-- Allows authenticated users to upload to their own folder
+CREATE POLICY "Allow authenticated user to upload to their own folder"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'documents' AND auth.uid() = (storage.foldername(name))[1]::uuid);
+```
+## 4. 백엔드 환경 설정
+가. Python 가상 환경 생성 및 활성화
+```
+
+# 가상 환경 생성
 python -m venv .venv
-### Windows
-```
+
+# Windows
 .venv\Scripts\activate
-```
-### macOS/Linux
-```
+
+# macOS/Linux
 source .venv/bin/activate
 ```
-## Python 패키지 설치 (requirements.txt 파일을 사용하는 경우)
+## 나. Python 라이브러리 설치
+requirements.txt 파일을 사용하여 필요한 모든 라이브러리를 설치합니다.
 ```
 pip install -r requirements.txt
 ```
-## requirements.txt 파일이 없는 경우, 다음 명령어를 사용하여 직접 설치
+## 다. .env 파일 생성 및 설정
+프로젝트 루트에 .env 파일을 생성하고, .env.example 파일을 참고하여 아래 변수들을 채워넣습니다.
 
 ```
-pip install fastapi uvicorn cryptography passlib[bcrypt] python-dotenv supabase-py
+# .env 파일
+
+# 1. Supabase 프로젝트의 URL과 anon KEY
+SUPABASE_URL="https://your-project-ref.supabase.co"
+SUPABASE_KEY="your-supabase-anon-key"
+
+# 2. JWT 토큰 암호화를 위한 비밀 키 (아래 명령어로 생성)
+# python -c "import secrets; print(secrets.token_hex(32))"
+SECRET_KEY="여기에_생성된_무작위_문자열을_입력하세요"
+
+# 3. RSA-2048 개인 키 (아래 명령어로 생성 후, private_key.pem 파일 내용을 복사)
+# openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+ISSUING_AUTHORITY_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n여기에\nprivate_key.pem\n파일의\n내용을\n붙여넣으세요\n-----END PRIVATE KEY-----"
 ```
+ISSUING_AUTHORITY_PRIVATE_KEY: private_key.pem 파일의 내용을 복사하여 붙여넣되, 반드시 줄바꿈을 \n으로 변경해야 합니다.
 
-## ⚙️ 환경 설정
-.env 파일 생성 및 설정:
-프로젝트 루트 디렉토리에 .env 파일을 생성하고, SUPABASE_URL, SUPABASE_KEY 값을 설정합니다. 특히, ISSUING_AUTHORITY_PRIVATE_KEY에는 유효한 PEM 형식의 RSA 개인 키를 입력해야 합니다.
-
-```
-openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048 명령어를 사용하여 개인 키를 생성할 수 있습니다.
-```
-
-
-## Supabase 데이터베이스 설정:
-Supabase의 documents 테이블에 signature라는 새로운 TEXT 타입 컬럼을 추가해야 합니다.
-
-## 🚀 애플리케이션 실행
-이제 백엔드 서버와 프론트엔드를 실행할 준비가 되었습니다.
-
-### 백엔드 서버 실행:
-이전에 활성화한 Python 가상 환경에서 다음 명령어를 실행합니다:
+## 5. 애플리케이션 실행
+## 가. 백엔드 서버 실행
 
 ```
 uvicorn main:app --reload --port 8000
-```
+```  
+서버가 http://127.0.0.1:8000 에서 실행됩니다.
 
-서버가 http://127.0.0.1:8000에서 실행될 것입니다.
+## 나. 프론트엔드 웹 페이지 열기
 
-### 프론트엔드 웹 페이지 열기:
-웹 브라우저를 열고 index.html 파일을 직접 엽니다.
-### 이제 웹 인터페이스를 통해 문서 등록, 검증, 조회를 테스트할 수 있습니다!
 
-## 문서 등록 시 Supabase의 documents 테이블에 file_hash와 signature 데이터가 성공적으로 저장되는지 확인해 보세요.  
-
+# 웹 브라우저에서 index.html 파일을 직접 엽니다. 이제 모든 기능이 정상적으로 동작할 것입니다.
