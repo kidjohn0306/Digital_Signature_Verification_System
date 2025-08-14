@@ -1,0 +1,30 @@
+services:
+  api:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: docver-api
+    env_file:
+      - ./back/.env
+    expose:
+      - "8000"
+    networks:
+      - webnet
+
+  web:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /api
+    container_name: docver-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
