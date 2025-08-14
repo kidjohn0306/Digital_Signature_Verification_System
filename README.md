@@ -104,7 +104,7 @@ ISSUING_AUTHORITY_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVAT
 |<img width="709" height="661" alt="main" src="https://github.com/user-attachments/assets/024d9f75-f2d8-4beb-bea1-365cbca90969" />| 
 
 ---
-## 📄 라이선스
+## 📄 MIT 라이선스
 ```markdown
 이 프로젝트는 [MIT License](https://github.com/kidjohn0306/Digital_Signature_Verification_System/blob/main/LICENSE)를 따릅니다.  
 Copyright © 보안지킴이_a security guard
