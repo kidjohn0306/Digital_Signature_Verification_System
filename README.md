@@ -10,9 +10,15 @@ FastAPI 백엔드와 Supabase를 기반으로 **디지털 서명(Digital Signatu
 > 실행 후 `http://localhost:8080` 접속
 
 ```bash
+# 1. 레포지토리 클론
 git clone https://github.com/kidjohn0306/Digital_Signature_Verification_System.git
+
+# 2. 프로젝트 폴더로 이동
 cd Digital_Signature_Verification_System
+
+# 3. Docker Compose로 백엔드·프론트엔드 컨테이너 실행
 docker compose up -d
+
 ```
 필수 준비물  
 - Docker & Docker Compose 설치  
