@@ -27,9 +27,21 @@ docker compose up -d
 ```bash
 SUPABASE_URL="https://your-project.supabase.co"
 SUPABASE_KEY="your-anon-key"
+
 SECRET_KEY="랜덤_32바이트_16진수"
 ISSUING_AUTHORITY_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+
+ALGORITHM="HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# 개발용은 비워두거나 도메인 미설정
+COOKIE_DOMAIN=""
+COOKIE_SECURE=false
+
+# CORS 허용(프론트 dev 서버 주소)
+CORS_ORIGINS="http://localhost:5173,http://127.0.0.1:5173"
 ```
+
 ## ✨ 주요 기능
 ### 인증 및 권한
 
