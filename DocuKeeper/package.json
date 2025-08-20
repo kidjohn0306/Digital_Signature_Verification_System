@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev:back": ".\\\\.venv\\\\Scripts\\\\python.exe -m uvicorn back.main:app --reload --port 8000",
+    "dev:front": "npm --prefix front run dev",
+    "dev:all": "concurrently -k -n BACK,FRONT -c yellow,cyan \"npm run dev:back\" \"npm run dev:front\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
