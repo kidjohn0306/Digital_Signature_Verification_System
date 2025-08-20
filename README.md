@@ -15,6 +15,7 @@ git clone https://github.com/kidjohn0306/Digital_Signature_Verification_System.g
 
 # 2. 프로젝트 폴더로 이동
 cd Digital_Signature_Verification_System
+cd DocuKeeper
 
 # 3. Docker Compose로 백엔드·프론트엔드 컨테이너 실행
 docker compose up -d
